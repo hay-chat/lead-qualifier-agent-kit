@@ -4,7 +4,7 @@ const path = require('path');
 
 const BASE_URL = process.env.DAEMON_URL || `http://localhost:${process.env.DAEMON_PORT || 7823}`;
 const SESSION_URL = `${BASE_URL}/session`;
-const AUTH_USER = process.env.BASIC_AUTH_USER || 'icp';
+const AUTH_USER = 'icp';
 const AUTH_PASSWORD = process.env.BASIC_AUTH_PASSWORD;
 
 async function main() {

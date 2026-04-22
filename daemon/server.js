@@ -7,7 +7,7 @@ const { saveSession, getSession, sessionMeta, STORAGE_DIR } = require('./storage
 const { generateKey } = require('./encryption');
 
 const DEFAULT_PORT = Number(process.env.DAEMON_PORT) || 7823;
-const BASIC_AUTH_USER = process.env.BASIC_AUTH_USER || 'icp';
+const BASIC_AUTH_USER = 'icp';
 const BASIC_AUTH_PASSWORD = process.env.BASIC_AUTH_PASSWORD;
 
 if (!process.env.ENCRYPTION_KEY) {
@@ -125,12 +125,11 @@ async function findOpenPort(start) {
     console.log('│  Lead Qualifier Agent Kit — LinkedIn cookie daemon   │');
     console.log('├──────────────────────────────────────────────────────┤');
     console.log(`│  URL:      http://localhost:${port.toString().padEnd(25)}│`);
-    console.log(`│  Username: ${BASIC_AUTH_USER.padEnd(42)}│`);
     console.log(`│  Password: ${BASIC_AUTH_PASSWORD.padEnd(42)}│`);
     console.log(`│  Storage:  ${STORAGE_DIR.padEnd(42)}│`);
     console.log('└──────────────────────────────────────────────────────┘');
     console.log('');
-    console.log('Paste the URL, Username, and Password into the Chrome extension popup.');
+    console.log('Paste the URL and Password into the Chrome extension popup.');
     console.log('Then log into LinkedIn in Chrome — cookies sync automatically.');
     console.log('');
   });

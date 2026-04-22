@@ -22,27 +22,26 @@ async function getLinkedInCookies() {
 }
 
 async function getSettings() {
-  return chrome.storage.sync.get(['daemonUrl', 'daemonUser', 'daemonPassword']);
+  return chrome.storage.sync.get(['daemonUrl', 'daemonPassword']);
 }
 
 async function syncCookies() {
-  const { daemonUrl, daemonUser, daemonPassword } = await getSettings();
+  const { daemonUrl, daemonPassword } = await getSettings();
 
-  if (!daemonUrl || !daemonUser || !daemonPassword) {
-    console.log('[ICP] Skipping cookie sync — extension not fully configured');
-    return;
+  if (!daemonUrl || !daemonPassword) {
+    return { ok: false, error: 'Extension not configured — save the daemon URL and password first.' };
   }
 
   const cookies = await getLinkedInCookies();
   if (cookies.length === 0) {
-    console.log('[ICP] No LinkedIn cookies found — log into LinkedIn in this browser first');
-    return;
+    return { ok: false, error: 'No LinkedIn cookies found. Log into LinkedIn in this browser first.' };
   }
 
-  const authHeader = 'Basic ' + btoa(`${daemonUser}:${daemonPassword}`);
+  const authHeader = 'Basic ' + btoa(`icp:${daemonPassword}`);
 
+  let res;
   try {
-    const res = await fetch(`${daemonUrl}/session`, {
+    res = await fetch(`${daemonUrl}/session`, {
       method: 'POST',
       headers: {
         Authorization: authHeader,
@@ -50,18 +49,24 @@ async function syncCookies() {
       },
       body: JSON.stringify({ cookies }),
     });
-
-    if (!res.ok) {
-      console.error('[ICP] Cookie sync failed:', res.status, await res.text());
-      return;
-    }
-
-    const data = await res.json();
-    console.log('[ICP] LinkedIn cookies synced. Expires:', data.expiresAt);
-    await chrome.storage.local.set({ lastCookieSync: Date.now() });
   } catch (err) {
     console.error('[ICP] Cookie sync error (is the daemon running?):', err.message);
+    return { ok: false, error: 'Daemon not reachable. Run `npm start` in the project folder.' };
   }
+
+  if (res.status === 401) {
+    return { ok: false, error: 'Password rejected by daemon.' };
+  }
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    console.error('[ICP] Cookie sync failed:', res.status, body);
+    return { ok: false, error: `Daemon responded with ${res.status}.` };
+  }
+
+  const data = await res.json();
+  console.log('[ICP] LinkedIn cookies synced. Expires:', data.expiresAt);
+  await chrome.storage.local.set({ lastCookieSync: Date.now() });
+  return { ok: true, count: cookies.length, expiresAt: data.expiresAt };
 }
 
 chrome.alarms.create(ALARM_NAME, { periodInMinutes: SYNC_INTERVAL_MINUTES });
@@ -85,8 +90,8 @@ chrome.storage.onChanged.addListener((changes, area) => {
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === 'SYNC_COOKIES_NOW') {
     syncCookies()
-      .then(() => sendResponse({ success: true }))
-      .catch((err) => sendResponse({ error: err.message }));
+      .then((result) => sendResponse(result))
+      .catch((err) => sendResponse({ ok: false, error: err.message }));
     return true;
   }
 });
