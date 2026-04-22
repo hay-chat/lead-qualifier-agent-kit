@@ -1,0 +1,20 @@
+{
+  "name": "lead-qualifier-agent-kit",
+  "version": "0.1.0",
+  "description": "Claude Code agents that qualify leads against your ICP using your logged-in LinkedIn session. Local-first, CSV-driven.",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "setup": "node setup.js",
+    "start": "node daemon/server.js",
+    "research": "node agents/icp-research/run.js",
+    "outreach": "node agents/outreach-prep/run.js",
+    "load-session": "node agents/lib/load-session.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "proper-lockfile": "^4.1.2"
+  }
+}

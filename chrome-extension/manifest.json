@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Lead Qualifier Agent Kit — LinkedIn Session Sync",
+  "version": "1.0.0",
+  "description": "Syncs your LinkedIn session cookies to a local daemon so the lead qualifier agent can browse as you.",
+  "permissions": ["storage", "cookies", "alarms"],
+  "host_permissions": [
+    "https://www.linkedin.com/*",
+    "https://*.linkedin.com/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Lead Qualifier Agent Kit"
+  },
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
