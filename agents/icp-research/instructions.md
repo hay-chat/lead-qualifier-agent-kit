@@ -17,12 +17,8 @@ Visit with a headed browser (`npx playwright-cli -s=icp<slot> ...`):
 
 1. **Homepage** — understand product, value prop, target customer
 2. **Pricing page** — classify pricing model per `ICP.md` (typically `PLG_FREEMIUM` / `SELF_SERVE` / `SALES_LED` / `ENTERPRISE_ONLY`)
-3. **Help / support page** — try:
-   - `help.<domain>`, `support.<domain>`, `docs.<domain>`
-   - `<domain>/help`, `<domain>/support`, `<domain>/faq`, `<domain>/knowledge-base`
-   - If you find one, capture its URL (for `support_page`) and rough article count
-4. **About / team page** — employee count, location, stage
-5. **Check for a chat widget** — look at page DOM for Intercom, Crisp, Zendesk, Drift, etc. Capture as `chat_supplier`.
+3. **About / team page** — employee count, location, stage
+4. **Any other pages the ICP rubric in `ICP.md` calls out as relevant signals**
 
 **Navigate naturally.** One page at a time, `snapshot` after each goto to verify the page loaded. If the domain doesn't resolve or shows a captcha, skip the company (don't write anything to the CSV — it stays pending for a future run).
 
@@ -49,10 +45,7 @@ node agents/lib/csv-io.js update <index> '{
   "customer_type": "SMB | MID_MARKET | ENTERPRISE",
   "vertical": "...",
   "employees": "...",
-  "support_page": "...",
-  "chat_supplier": "...",
-  "notes": "2-3 paragraph summary of findings, including what they sell, pricing model, help center status, support automation potential, and why the score is what it is.",
-  "researched_at": "<YYYY-MM-DD>"
+  "notes": "2-3 paragraph summary of findings, including what they sell, pricing model, relevant signals from the ICP rubric, and why the score is what it is."
 }'
 ```
 

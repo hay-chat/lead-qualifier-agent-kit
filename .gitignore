@@ -6,3 +6,4 @@ companies.output.csv
 *.log
 .DS_Store
 .claude/
+.playwright-cli/

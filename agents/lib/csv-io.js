@@ -25,12 +25,9 @@ const OUTPUT_COLUMNS = [
   'customer_type',
   'vertical',
   'employees',
-  'support_page',
-  'chat_supplier',
   'notes',
   'key_people',
   'language',
-  'researched_at',
   'outreach_prepped_at',
 ];
 

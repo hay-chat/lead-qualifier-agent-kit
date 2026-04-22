@@ -56,7 +56,7 @@ node agents/lib/csv-io.js update <index> '<json>'  # merge JSON into row and wri
 Writes are locked (`proper-lockfile`) so parallel agents can safely update different rows.
 
 **Columns in `companies.output.csv`:**
-`name`, `website`, `score`, `fit`, `stage`, `pricing_model`, `customer_type`, `vertical`, `employees`, `support_page`, `chat_supplier`, `notes`, `key_people`, `language`, `researched_at`, `outreach_prepped_at`.
+`name`, `website`, `score`, `fit`, `stage`, `pricing_model`, `customer_type`, `vertical`, `employees`, `notes`, `key_people`, `language`, `outreach_prepped_at`.
 
 ## ICP definition
 
